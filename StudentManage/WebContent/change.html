@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function test()
+{
+	    stuID     =document.getElementById("stuID").value;
+	    stuName   =document.getElementById("stuName").value;
+	    profession=document.getElementById("profession").value;
+	    data      =document.getElementById("data").value;
+	    sex       =document.getElementById("sex").value;
+	    ID        =document.getElementById("ID").value;
+	    totalScore=document.getElementById("totalScore").value;
+	    note      =document.getElementById("note").value;
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else
+	  {// code for IE6, IE5 
+	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	  } 
+	   alert("学号，学分不可修改");
+	   xmlhttp.open("post","change.do", true);
+	 
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			     if(xmlhttp.responseText=="yes")
+			    	 {
+			    	 alert("修改成功");
+			    	 window.location.href="studentView.html";
+			    	 }
+			     else if(xmlhttp.responseText=="no")
+			        {
+			    	 alert("修改不成功");
+			    	 window.location.href="studentView.html"; 
+			        }	
+			     else
+			       {
+			    	 alert("qitawenti");
+			       }	
+			   }
+	   }
+	   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	   xmlhttp.send("stuID="+stuID+"&stuName="+stuName+"&profession="+profession+
+			   "&data="+data+"&sex="+sex+"&ID="+ID+"&totalScore="+totalScore +"&note="+note);
+	 
+}
+</script>
+</head>
+<body>
+    <div align="center"> 
+             学号  <input type="text"      name="stuID"       id="stuID"/><br>
+             姓名  <input type="text"      name="stuName"     id="stuName"/><br>
+             专业  <input type="text"      name="profession"  id="profession"/><br>
+             入学日期  <input type="text"   name="data"        id="data"/><br>
+             性别 <input type="text"      name="sex"         id="sex" /><br>
+             身份证号码<input type="text"   name="ID"          id="ID" /><br>
+             学分<input type="text"       name="totalScore"  id="totalScore"/><br>
+             其他说明<input type="text"    name="note"        id="note"/><br>
+    <button onclick="test()">确认修改</button>     
+    </div>
+</body>
+</html>

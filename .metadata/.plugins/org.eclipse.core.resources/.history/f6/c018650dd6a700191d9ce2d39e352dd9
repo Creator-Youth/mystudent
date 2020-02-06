@@ -1,0 +1,18 @@
+package com.hugeyurt.test;
+
+import java.sql.SQLException;
+
+import com.hugeyurt.service.enterService;
+
+public class APP {
+
+	public static void main(String[] args) throws SQLException 
+	{
+		enterService en=new enterService();
+		System.out.println(en.input("n0001","1213"));
+		
+		// TODO Auto-generated method stub
+
+	}
+
+}

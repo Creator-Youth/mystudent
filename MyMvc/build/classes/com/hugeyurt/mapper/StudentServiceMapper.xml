@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hugeyurt.mapper.StudentServiceMapper">
+	
+	<resultMap type="Student" id="studentcard">
+	  <result property="sno"  column="sno"/>
+	  <result property="sname"  column="sname"/>
+	  <result property="pwd"  column="pwd"/>
+	  <association property="card" javaType="Card">
+	    <result property="id"  column="cid"/>
+	    <result property="money"  column="money"/>
+	  </association>
+	  <association property="classInfo" javaType="ClassInfo">
+	    <result property="id"  column="bid"/>
+	    <result property="bname"  column="classname"/>
+	  </association>
+	  <collection property="scs" ofType="SC">
+	      <result property="score" column="score" />
+	     <association property="course"  javaType="Course">
+	      <result property="cno"  column="cno"/>
+	       <result property="cname"  column="cname"/>
+	     </association>
+       </collection> 
+    </resultMap>
+	
+	<resultMap type="ClassInfo" id="classandstudent">
+	   <result property="id"  column="bid"/>
+	  <result property="bname"  column="classname"/>
+	  <collection property="stus" ofType="Student">
+	   <result property="sno"  column="sno"/>
+	  <result property="sname"  column="sname"/>
+	  <result property="pwd"  column="pwd"/>
+	  <association property="card" javaType="Card">
+	    <result property="id"  column="cid"/>
+	    <result property="money"  column="money"/>
+	  </association>
+	  </collection>
+	</resultMap>
+	
+	
+      <select id="getAllStudent"  resultMap="studentcard">
+		select student_class_view.*,sc.score,course.* from student_class_view,sc,course
+where student_class_view.sno=sc.sno and sc.cno=course.cno
+	  </select>
+	  
+	  <select id="loginStu" parameterType="Student" resultType="Student">
+	    select * from student where sno=#{sno} and pwd=#{pwd}
+	  </select>
+	<!--  select * from userinfo where userID=? and pwd=?  -->
+     <insert id="saveStu" parameterType="Student">
+      insert into student(sno,sname,pwd)values(
+      #{sno},#{sname},${pwd})
+     </insert>
+
+
+</mapper>

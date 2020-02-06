@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>个人信息修改</title>
+<script type="text/javascript">
+function test()
+{
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	   
+	   xmlhttp.open("get", "viewstudent.do", true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value1=xmlhttp.responseText;
+			      json1=eval("("+value1+")");
+			      document.getElementById("stus").innerHTML=display(json1);		      
+			   }
+		   
+	   }
+	   
+	   xmlhttp.send();
+
+}
+
+function display(json)
+{
+     content="<table border='1' align='center'><tr><th>你的所有信息</tr>";
+	 content+="<tr><td>学号</td><td>"+json.stuID+"</td>";
+	 content+="<tr><td>姓名</td><td>"+json.stuName+"</td>";
+	 content+="<tr><td>专业</td><td>"+json.profession+"</td>";
+	 content+="<tr><td>入学日期</td><td>"+json.data+"</td>";
+	 content+="<tr><td>性别</td><td>"+json.sex+"</td>";
+	 content+="<tr><td>身份证号码</td><td>"+json.ID+"</td>";
+	 content+="<tr><td>学分</td><td>"+json.totalScore+"</td>";
+	 content+="<tr><td>其他说明</td><td>"+json.note+"</td>";
+	 content+="<tr><td><a href='change.html'>修改自己的信息</a></td>";	
+	 content+="<td><a href='changepassname.html'>修改自己的登陆密码</a></td></tr>";
+	 content+="<tr><td><button onclick='add1()'>选课</button></td>";
+	 content+="<td><button onclick='add2()'>返回登录</button></td></tr>";
+     content+="</table>";
+     return content;
+}
+
+function add1()
+{
+	window.location.href="addScore.html";	
+}
+function add2()
+{
+	window.location.href="enter.html";	
+}
+
+function add3()
+{
+	 if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	   
+	   xmlhttp.open("post", "Allcourse.do", true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value=xmlhttp.responseText;
+			      json2=eval("("+value+")");
+			      document.getElementById("stuss").innerHTML=display1(json2);
+			      		      
+			   }
+		   
+	   }
+	   xmlhttp.send();
+}
+
+function display1(json)
+{
+	
+	  content="<table border='1' align='center'><tr><td>课程号</td>";
+	  for(i=0;i<json.length;i++)
+		{
+		
+		  content+="<td>"+json[i]+"</td>"; 
+		}
+	  content+="</tr></table>";
+	return content;
+
+}
+function add4()
+{
+	window.location.href="studentView.html";		
+}
+/*  function switch(string)
+{  if (string==s0001)
+  {return 英语;}
+  else if (string==s0002)
+  {return 语文;}
+  else if (string==s0003)
+  {return 高数;}
+  else if (string==s0004)
+  {return 音乐;}
+  else if (string==s0005)
+  {return 化学;}
+  else if (string==s0006)
+  {return 大物;}
+  else  (string==s0007)
+  {return 政治;}
+ 
+} */
+ 
+ 
+</script>
+</head>
+<body >
+  <div align="center">
+    <button onclick="test()">你的个人信息</button><br>
+    <div id="stus"></div>
+    <button onclick="add4()">收起列表</button><br>
+    <button onclick="add3()">你的选课情况</button><br>
+    <div id="stuss"></div>
+    <button onclick="add4()">收起列表</button><br>
+  </div>
+
+</body>
+</html>

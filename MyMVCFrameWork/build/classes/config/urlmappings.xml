@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+  <bean  url="/test1.do" class="com.hugeyurt.controller.LoginController" ></bean>
+  
+ <!--  <bean  url="test2.do" class="my.com.Demo" ></bean> -->
+  
+  <bean  class="com.hugeyurt.controller.DemoController">
+     <method url="/demo.do"  name="test" action="jsp">
+        <param name="session">javax.servlet.http.HttpSession</param>
+     </method>
+     
+      <method url="/reg.do"  name="reg" action="json">
+        <param name="stu">com.hugeyurt.po.Student</param>
+        <!-- <param name="pwd">java.lang.String</param>
+        <param name="sname">java.lang.String</param> -->
+     </method>
+  </bean>
+
+
+</beans>

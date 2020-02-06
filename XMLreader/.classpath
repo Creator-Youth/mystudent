@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="E:/JAVA/dom4j/dom4j-2.0.0-RC1.jar"/>
+	<classpathentry kind="lib" path="E:/JAVA/JAR/jdom-2.0.5/jdom-2.0.5.jar"/>
+	<classpathentry kind="lib" path="E:/JAVA/JAR/jdom-2.0.5/jdom-2.0.5-contrib.jar"/>
+	<classpathentry kind="lib" path="E:/JAVA/JAR/jdom-2.0.5/jdom-2.0.5-javadoc.jar"/>
+	<classpathentry kind="lib" path="E:/JAVA/JAR/jdom-2.0.5/jdom-2.0.5-junit.jar"/>
+	<classpathentry kind="lib" path="E:/JAVA/JAR/jdom-2.0.5/jdom-2.0.5-sources.jar"/>
+	<classpathentry kind="lib" path="E:/JAVA/JAR/jdom-2.0.5/lib/jaxen-1.1.6.jar"/>
+	<classpathentry kind="lib" path="E:/JAVA/JAR/jdom-2.0.5/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="E:/JAVA/JAR/jdom-2.0.5/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="E:/JAVA/JAR/jdom.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

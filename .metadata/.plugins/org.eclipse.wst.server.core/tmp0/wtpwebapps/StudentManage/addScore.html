@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>选课</title>
+<script type="text/javascript">
+ function test1()
+  {
+	  var obj = document.getElementById("KK");
+      var index = obj.selectedIndex; // 选中索引
+      var text = obj.options[index].text; // 选中文本
+      var scorename = obj.options[index].value;
+      alert(scorename);
+  	  if (window.XMLHttpRequest) 
+	   {
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else 
+	   {// code for IE6, IE5 
+	       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	  
+  	  xmlhttp.open("post", "addScore.do", true);
+  	  xmlhttp.onreadystatechange=function()
+  	  {
+  		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		  {
+		    if(xmlhttp.responseText=="0")         
+		    {
+		    	alert("你已经选过该课程");
+		    	window.location.href="addScore.html";		    	
+		    }		   		   
+		    else
+		    {
+		    	alert("选课成功");		    	
+		    } 
+  	     }
+  	  }
+  	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+   	  xmlhttp.send("scorename="+scorename);
+ }
+function test2()
+{
+	window.location.href="addScore.html";
+}
+
+function test3()
+{
+	  if (window.XMLHttpRequest) 
+	   {
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else 
+	   {// code for IE6, IE5 
+	       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	  
+	  xmlhttp.open("get", "stopSelectScore.do", true);
+	  xmlhttp.onreadystatechange=function()
+	  {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		  {
+		      if(xmlhttp.responseText=="0") //teacher       
+		       {
+		    	 
+		    	  window.location.href="teacherview.html";		    	
+		       }		   		   
+		      else
+		       {
+		    	  window.location.href="studentView.html";	    	
+		       } 
+	     }
+	  }
+	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	  xmlhttp.send();
+}
+
+</script>
+</head>
+<body>
+  <select id="KK">
+  <option value="s0001">英语</option>
+  <option value="s0002">语文</option>
+  <option value="s0003">高数</option>
+  <option value="s0004">音乐</option>
+  <option value="s0005">化学</option>
+  <option value="s0006">大物</option>
+  <option value="s0007">政治</option>
+  </select><br>
+       <button onclick="test1()">确认选课</button><br>
+       <button onclick="test2()">继续选课</button><br>
+       <button onclick="test3()">退出选课</button><br>
+       <div id="stus" ></div>
+      
+       
+</body>
+</html>

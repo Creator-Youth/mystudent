@@ -1,0 +1,131 @@
+package wxs0605;
+
+import java.util.Scanner;
+import java.util.Stack;
+
+
+public class Main 
+{
+     int data;
+     Main lchild;
+     Main rchild;
+     
+    public Main()
+ 	{
+    	
+ 	}
+ 	
+ 	
+ 	public Main(int data)
+ 	{
+ 		this.data=data;
+ 		this.lchild=this.rchild=null;
+ 	}
+ 	
+ 	public static Main createMain(int m)
+ 	{
+ 		
+		int array2[]=change();
+ 		Main root=null;		
+ 		for(int k=0;k<array2.length;k++)
+ 		{
+ 			int mm=array2[k]=0;
+ 			if(mm<=0) return null;
+ 			root=new Main(mm);
+ 			root.lchild=createMain(mm);
+ 	 		root.rchild=createMain(mm);
+ 		}		
+ 		return root;
+ 	}
+ 	
+ 	
+ 	public  void mid(Main root)//ÖÐÐò±éÀú
+ 	{
+ 		if(root==null)
+ 		{
+ 			return ;
+ 		}
+ 		Stack<Main> stack=new Stack<Main>();
+ 		while(root!=null)
+ 		{ 			
+ 			stack.push(root);
+ 			root=root.lchild;
+ 		}
+ 		
+ 		while (!stack.isEmpty())
+ 		{
+ 			root=stack.pop();
+ 			System.out.println(root.data);
+ 			if(root.rchild!=null)
+ 			{
+ 				    root=root.rchild;				
+ 				    while(root!=null)
+ 			 		{			 			
+ 			 			stack.push(root);
+ 			 			root=root.lchild;
+ 			 		}	 		 				
+ 			}
+ 		}
+ 	}
+ 	@SuppressWarnings("resource")
+	public static int[] change()
+ 	{
+ 		Scanner reader=new Scanner(System.in);
+ 		String str=reader.nextLine();
+ 		char []array1=str.toCharArray();
+ 		int  []array2=new  int[array1.length];
+ 		int i=0,j=0;
+ 		for(int k=0;k<array2.length;k++)
+ 		{
+ 			array2[k]=0;
+ 		}
+ 		while(j<array1.length)///             1(2(3,4(,5)),6(7,))
+ 		{
+ 			if(array1[j]=='(')
+ 			{	int k=j+1;
+ 			    int kk=j+2;
+ 				if
+ 				(
+ 						(array1[k]=='1'||array1[k]=='2'||array1[k]=='3'||array1[k]=='4'||array1[k]=='5'
+ 				         ||array1[k]=='6'||array1[k]=='7'||array1[k]=='8'||array1[k]=='9')
+ 						&&array1[kk]==',')
+ 				{
+ 					array2[i++]=(int)array1[k];	
+ 					array2[i++]=0;
+					array2[i++]=0;
+				    j+=3;
+ 				}
+ 				if(     array1[k]==','&&
+ 						 (array1[kk]=='1'||array1[kk]=='2'||array1[kk]=='3'||array1[kk]=='4'||array1[kk]=='5'
+ 		 				    ||array1[kk]=='6'||array1[kk]=='7'||array1[kk]=='8'||array1[kk]=='9')
+ 				   )
+ 					{
+ 					    array2[i++]=0;
+ 					    array2[i++]=0;
+ 					    array2[i++]=(int)array1[kk];
+ 					    j+=3;
+ 					}
+ 			}
+ 			else if (  array1[j]=='1'||array1[j]=='2'||array1[j]=='3'||array1[j]=='4'||array1[j]=='5'
+ 					||array1[j]=='6'||array1[j]=='7'||array1[j]=='8'||array1[j]=='9')
+				{
+					array2[i++]=(int)array1[j];
+					j++;
+			    }
+ 			else j++;
+ 		}
+ 		for(int k=0;k<array2.length;k++)
+ 		{
+ 			System.out.println(array2[k]);
+ 		}
+ 		return array2;
+ 	}
+ 	
+ 	public static void main(String[] args)
+ 	{
+ 		
+		Main bt= new Main();
+		bt.mid(Main.createMain(0));
+ 	}
+	
+}

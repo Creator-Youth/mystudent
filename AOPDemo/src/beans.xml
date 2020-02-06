@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<bean id="demoService" class="com.hugeyurt.springAOP.ServiceDemo">
+		<property name="name" value="hugeyurt" />
+		<property name="url" value="hugeyurt.com" />
+	</bean>
+	
+	 <bean id="demoService2" class="com.hugeyurt.springAOP.ServiceDemo2"/> 
+
+	<!-- <bean id="userInfo" class="com.hugeyurt.jdkaop.UserInfo"/> -->
+	
+
+	<bean id="beforeDemo" class="com.hugeyurt.springAOP.DemoBeforeAdvice" />
+	<bean id="afterDemo" class="com.hugeyurt.springAOP.AfterAdviceDemo" />
+	<!-- <bean id="beforeDemo2" class="com.hugeyurt.springAOP.BeforeDemoTwo" /> -->
+	<bean id="roundDemo" class="com.hugeyurt.springAOP.RoundAdviceDemo" />
+		
+	<!-- <bean id="serviceProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="demoService" />
+		<property name="interceptorNames">
+			<list>
+				 <value>beforeDemo2</value> 
+				 <value>beforeDemo</value> 
+				 <value>afterDemo</value> 
+			</list>
+		</property>
+	</bean>   -->
+	
+   <aop:config>
+		<!-- 切入点 -->
+		<aop:pointcut id="methodPoint"
+			expression="execution(* com.hugeyurt.springAOP.*.*(..)) " />
+			<!-- 在该切入点使用自定义拦截器 -->
+		<aop:advisor pointcut-ref="methodPoint" advice-ref="beforeDemo" />
+	</aop:config> 
+	
+
+	
+
+
+</beans>

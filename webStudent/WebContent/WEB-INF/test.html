@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script type="text/javascript">
+   function test()
+   {
+	   value=document.getElementById("sno").value;
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	 else {// code for IE6, IE5 
+	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	 } 
+	   
+	   xmlhttp.open("get", "demo?sno="+value, true);
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      if(xmlhttp.responseText=="yes")
+			    	  document.getElementById("kk").innerHTML="抱歉，用户已被注册";
+			      else
+			    	  document.getElementById("kk").innerHTML="恭喜，用户可用";  
+			   }
+		   
+	   }
+	   xmlhttp.send();
+  // alert(sno);
+   }
+   
+   </script>
+</head>
+<body>
+    <form>
+          用户名：<input type="text" name="sno" id="sno" onblur="test()"/>
+     <div id="kk"></div>
+    </form>
+  <div> <button >测试一下</button></div> 
+</body>
+</html>

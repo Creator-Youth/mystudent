@@ -1,0 +1,12 @@
+127.0.0.1 - - [08/Aug/2019:21:59:55 +0800] "GET / HTTP/1.1" 404 994
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:21:59:57 +0800] "GET /StudentManage/ HTTP/1.1" 200 -
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:00:11 +0800] "GET /StudentManage/ HTTP/1.1" 200 -
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:00:12 +0800] "GET /favicon.ico HTTP/1.1" 404 1016
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:00:35 +0800] "GET /StudentManage/enter.html HTTP/1.1" 200 1793
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:01:18 +0800] "POST /StudentManage/enter.do HTTP/1.1" 200 1
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:01:18 +0800] "POST /StudentManage/enter.do HTTP/1.1" 200 1
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:01:25 +0800] "GET /StudentManage/success.html HTTP/1.1" 200 822
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:01:27 +0800] "GET /StudentManage/findTotalScore.do HTTP/1.1" 200 -
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:01:27 +0800] "GET /StudentManage/studentView.html HTTP/1.1" 200 3550
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:02:13 +0800] "GET /StudentManage/viewstudent.do HTTP/1.1" 200 242
+0:0:0:0:0:0:0:1 - - [08/Aug/2019:22:02:29 +0800] "GET /StudentManage/studentView.html HTTP/1.1" 200 -

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Encrypt</title>
+    <script src="js/jsencrypt.js"></script>
+    <script type="text/javascript">
+        var ps;
+        var publickey;
+        var d;
+        function sendPwd()
+        {
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            pwd=document.getElementById("pwd").value;
+            //alert(pwd);
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(publickey);
+            d=encrypt.encrypt(pwd);
+            
+
+            
+            xmlhttp.open("get", "login?pwd="+d, true);
+            
+            
+            xmlhttp.onreadystatechange=function()
+            {
+
+                //alert(xmlhttp.responseText);
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                   
+
+
+                }
+             
+             
+
+            }
+      
+            xmlhttp.send();
+        }
+        
+        
+       function getkey()
+        {
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }
+            else
+                {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            //alert(p);
+            xmlhttp.open("get", "getpublic", false);
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                	publickey=xmlhttp.responseText;
+                 
+                    alert(publickey);
+                }
+
+            }
+            
+            xmlhttp.send();
+        }
+    </script>
+
+</head>
+<body onload="getkey()">
+<br><br><br><br><br><br><br><br>
+<h1 align="center">RSA加密测试</h1><br>
+   
+    账号:<input type="text" id="userid"  required="required" autofocus><br>
+    密码：<input type="password" id="pwd" required="required"><br/>
+    
+    <br>
+    <button id="send" onclick="sendPwd()">发送</button>
+</body>
+</html>

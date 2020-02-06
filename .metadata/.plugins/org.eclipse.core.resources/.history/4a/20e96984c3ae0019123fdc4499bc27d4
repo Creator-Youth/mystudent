@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function test()
+{
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	   
+	   xmlhttp.open("post", "view", true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value=xmlhttp.responseText;
+			      json=eval("("+value+")");
+			      document.getElementById("stus").innerHTML=display(json);			      
+			   }
+		   
+	   }
+	   xmlhttp.send();
+
+}
+
+function display(json)
+{
+     content="<table border='1' align='center'><tr><th>你的所有信息</tr>";
+	 content+="<tr><td>学号</td><td>"+json.stuID+"</td>";
+	 content+="<tr><td>姓名</td><td>"+json.stuName+"</td>";;
+	 content+="<tr><td>专业</td><td>"+json.profession+"</td>";
+	 content+="<tr><td>入学日期</td><td>"+json.data+"</td>";
+	 content+="<tr><td>性别</td><td>"+json.sex+"</td>";
+	 content+="<tr><td>身份证号码</td><td>"+json.ID+"</td>";
+	 content+="<tr><td>学分</td><td>"+json.totalScore+"</td>";
+	 content+="<tr><td>其他说明</td><td>"+json.note+"</td>";
+	 content+="<tr><td><a href='change.html'>修改自己的信息</a></td>";	
+	 content+="<td><a href='changepassname.html'>修改自己的登陆密码</a></td></tr>"
+	 content+="<td><button onclick='add1()'>选课</button></td>";
+	 content+="<td><button onclick='add2()'>返回登录</button></td>";
+     content+="</table>";
+  return content;
+}
+
+function add1()
+{
+	window.location.href="studentAddScore.html";	
+}
+function add2()
+{
+	window.location.href="enter.html";	
+}
+
+</script>
+</head>
+<body onload="test()">
+  <div align="center">
+    <h1>你的信息</h1>
+     <div id="stus"></div>
+  </div>
+
+</body>
+</html>

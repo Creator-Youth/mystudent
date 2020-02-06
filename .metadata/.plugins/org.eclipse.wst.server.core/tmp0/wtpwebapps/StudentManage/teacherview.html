@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>教师界面</title>
+<script type="text/javascript">
+var page=1;
+function test()
+{
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	  
+	   xmlhttp.open("post","teacherview.do", true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value=xmlhttp.responseText;
+			      json=eval("("+value+")");
+			      document.getElementById("stus").innerHTML=display(json);			      
+			   }		   
+	   }
+	   xmlhttp.send();
+
+}
+
+function display(json)
+{
+     content ="<table border='1' align='center'><tr><th>你的所有信息 </th></tr>";
+	 content+="<tr><td>编号               </td><td>"+json.teacher+    "</td></tr>";
+	 content+="<tr><td>姓名               </td><td>"+json.teachername+"</td></tr>";
+	 content+="<tr><td>性别               </td><td>"+json.sex+        "</td></tr>";
+	 content+="<tr><td>身份证号码   </td><td>"+json.ID+         "</td></tr>";
+	 content+="<tr><td>年龄               </td><td>"+json.age+        "</td></tr>";
+	 content+="<tr><td>其他说明       </td><td>"+json.note+       "</td></tr>";	
+	 content+="<tr><td><button onclick='add5()  '>修改密码              </td>";
+	 content+="    <td><button onclick='add6()  '>查看学生                    </button></td></tr>";
+	 content+="<tr><td><button onclick='add1()  '>开始选课                    </button></td>";
+	 content+="    <td><button onclick='add3()  '>添加学生                    </button></td></tr>";
+	 content+="<tr><td><button onclick='add4()  '>添加成绩                    </button></td>";
+	 content+="    <td><button onclick='add7()  '>选课情况                    </button></td></tr>";
+	 content+="<tr><td><button onclick='add8()  '>修改信息                    </button></td>"; 
+	 content+="    <td><button onclick='select()'>条件查询                     </button></td></tr>";	
+     content+="</table>";  
+     content+="<div id='stuss'  ></div>";  //展示学生信息  
+     content+="<div id='stussss'></div>";  //展示自己选课信息信息  
+     content+="<div id='sss'    ></div>";  //条件查询
+     content+="<div id='sss1'   ></div>";  //条件查询1
+     content+="<div id='sss2'   ></div>";  //条件查询2
+     content+="<div id='ssss'   ></div>";  //xiugaixinxi
+     return content;
+}
+
+function add8()
+{
+	document.getElementById("ssss").innerHTML=display6();
+
+}
+
+function display6()
+{		
+	content= " <table border='1' align='center'>";	
+	content+=" <tr><th>姓名</th><th>性别</th><th>身份证号码</th><th>年龄</th><th>其他说明</th><th>操作</th>";
+	content+=" <tr><td><input type='text'   name='teachername'     id='teachername1'   />  </td>";
+	content+=" <td>    <input type='text'   name='sex'             id='sex1'       />  </td>";
+	content+=" <td>    <input type='text'   name='ID'              id='ID1'      />  </td>";
+	content+=" <td>    <input type='text'   name='age'             id='age1'       />  </td>";	
+	content+=" <td>    <input type='text'   name='note'            id='note1'      />  </td>";	
+	content+=" <td>    <button  onclick='change6()'>确认</button></td></tr></table>";  
+	return content;
+} 
+
+function change6()
+{
+	    teachername1   =document.getElementById("teachername1").value;	   
+	     sex1          =document.getElementById("sex1").value;
+	     ID1           =document.getElementById("ID1").value;
+	     age1          =document.getElementById("age1").value;
+	     note1         =document.getElementById("note1").value;
+		 if (window.XMLHttpRequest) 
+		   {// code for IE7+, Firefox, Chrome, Opera, Safari
+		      xmlhttp=new XMLHttpRequest(); 
+		   } 
+		 else 
+		   {// code for IE6, IE5 
+		      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+		   } 	   
+		   xmlhttp.open("post","teacherChange.do", true);
+		
+		   xmlhttp.onreadystatechange=function()
+		   {
+			   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+				   {
+				    alert("修改成功");				 
+				   }		   
+		   }
+		   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		   xmlhttp.send("teachername1=" +teachername1+ "&sex1=" +sex1+ "&ID1=" +ID1+ "&age1="+age1+"&note1="+note1);	
+}
+
+function select()
+{
+	document.getElementById("sss").innerHTML=display5();	
+}
+function display5()
+{
+	  content="<select id='ss1'>";
+	  content+="<option value='马克思'>马克思</option>";
+	  content+="<option value='恩格斯'>恩格斯</option>";
+	  content+="<option value='乔布斯'>乔布斯</option>";
+	  content+="<option value='托马斯'>托马斯</option>";
+	  content+="</select>";
+	  content+="<button onclick='findByProf()'>按专业查询</button><br>";
+	  content+="<select id='ss2'>";
+	  content+="<option value='王'>王</option>";
+	  content+="<option value='木'>木</option>";
+	  content+="<option value='万'>万</option>";	 
+	  content+="</select>";
+	  content+="<button onclick='findByName()'>按姓查询</button>";
+	  return content;	
+}
+
+
+function findByProf()
+{
+	var obj    = document.getElementById("ss1");
+    var index  = obj.selectedIndex;       // 选中索引
+    var text   = obj.options[index].text; // 选中文本
+    var value1 = obj.options[index].value; 
+	if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	   
+	   xmlhttp.open("post", "findByProf.do", true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value2=xmlhttp.responseText;
+			      json=eval("("+value2+")");
+			      document.getElementById("sss1").innerHTML=display1(json);
+			      		      
+			   }		   
+	   }
+	   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	   xmlhttp.send("profession="+value1);
+		
+	
+}
+function findByName()
+{
+	var obj    = document.getElementById("ss2");
+    var index  = obj.selectedIndex;       // 选中索引
+    var text   = obj.options[index].text; // 选中文本
+    var value = obj.options[index].value; 
+	if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	   
+	   xmlhttp.open("post", "findByName.do", true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value2=xmlhttp.responseText;
+			      json=eval("("+value2+")");
+			      document.getElementById("sss2").innerHTML=display1(json);
+			      		      
+			   }		   
+	   }
+	   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	   xmlhttp.send("stuName="+value);
+		
+	
+}
+function add7()
+{
+	if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	   
+	   xmlhttp.open("post", "Allcourse.do", true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value=xmlhttp.responseText;
+			      json=eval("("+value+")");
+			      document.getElementById("stussss").innerHTML=display4(json);
+			      		      
+			   }		   
+	   }
+	   xmlhttp.send();
+	
+}
+
+function add1()
+{
+	window.location.href="addScore.html";	
+}
+function add2()
+{
+	window.location.href="enter.html";	
+}
+function add3()
+{
+	window.location.href="addstudent.html";	
+}
+function add4()
+{
+	window.location.href="score.html";	
+}
+function add5()
+{
+	window.location.href="changepassname.html";	
+}
+function add6()
+{
+	page=1;
+	if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 	   
+	  xmlhttp.open("get","seeAll.do?page="+page, true);
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value2=xmlhttp.responseText;
+			      json2=eval("("+value2+")");
+			      document.getElementById("stuss").innerHTML=display1(json2);			      
+			   }		   
+	   }
+	   xmlhttp.send();	
+}
+function display1(json2)
+{
+     content2 ="<table border='1' align='center'><tr><th>学号</th><th>姓名</th><th>专业</th><th>入学日期</th><th>性别</th><th>身份证号码</th><th>学分</th><th>其他说明</th><th>操作</th></tr>";    
+     for(i=0;i<json2.length;i++)
+ 	 {
+	     content2+="<tr><td>"+json2[i].stuID+     "</td>";
+	     content2+=    "<td>"+json2[i].stuName+   "</td>";
+	     content2+=    "<td>"+json2[i].profession+"</td>";
+	     content2+=    "<td>"+json2[i].data+      "</td>";
+	     content2+=    "<td>"+json2[i].sex+       "</td>";
+	     content2+=    "<td>"+json2[i].ID+        "</td>";
+	     content2+=    "<td>"+json2[i].totalScore+"</td>";
+	     content2+=    "<td>"+json2[i].note+      "</td>";	   
+	     content2+=    "<td><button onclick='change1(\""+json2[i].stuID+"\")'>修改全部</button></td>";
+	     content2+=    "<td><button onclick='change3(\""+json2[i].stuID+"\")'>修改专业</button></td></tr>";
+ 	 }
+     content2+="<div id='stusss'></div>";     //修改学生
+     content2+="<div id='stusssss'></div>";   //修改学生专业
+     content2+="<button onclick='test()'>收起</button>";   
+     content2+="</table>";
+     content2+="<button onclick='add6()'>首页</button>"; 
+     content2+="<button onclick='testpage1()'>上一页</button>"; 
+     content2+="<button onclick='testpage2()'>下一页</button>"; 
+     return content2;
+
+}
+
+function testpage1()
+{
+	page=page-1;
+	if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 	   
+	   xmlhttp.open("get","seeAll.do?page="+page, true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value2=xmlhttp.responseText;
+			      json2=eval("("+value2+")");
+			      document.getElementById("stuss").innerHTML=display1(json2,page);			      
+			   }		   
+	   }	  
+	   xmlhttp.send();	
+}
+function testpage2()
+{
+	  
+	page=page+1;
+	if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	   else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 	   
+	   xmlhttp.open("get","seeAll.do?page="+page, true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value2=xmlhttp.responseText;
+			      json2=eval("("+value2+")");
+			      document.getElementById("stuss").innerHTML=display1(json2,page);			      
+			   }		   
+	   }
+	   
+	   xmlhttp.send();	
+}
+function change3(stuID)
+{
+	document.getElementById("stusssss").innerHTML=display3(stuID);	
+}
+function display3(stuID)
+{
+	
+	  content="<select id='tt'>";
+	  content+="<option value='马克思'>马克思</option>";
+	  content+="<option value='恩格斯'>恩格斯</option>";
+	  content+="<option value='乔布斯'>乔布斯</option>";
+	  content+="<option value='托马斯'>托马斯</option>";
+	  content+="</select><br>";
+	  content+="<button onclick='change4(\""+stuID+"\")'>确认修改</button>";
+	  return content;
+}
+function change4(stuID)
+{
+	var obj    = document.getElementById("tt");
+    var index  = obj.selectedIndex;       // 选中索引
+    var text   = obj.options[index].text; // 选中文本
+    var value1 = obj.options[index].value; 
+    if (window.XMLHttpRequest) 
+	   {
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else 
+	   {
+	       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	  
+	  xmlhttp.open("post", "changeStuProf.do", true);
+	  xmlhttp.onreadystatechange=function()
+	  {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		  {
+			if(xmlhttp.responseText=="yes")
+			     {alert("修改成功");}	
+			else {alert("修改失败");}
+		  }
+
+	  };
+	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	  xmlhttp.send("stuID="+stuID+"&profession="+value1);
+	
+}
+function change1(stuID2)
+{
+	 document.getElementById("stusss").innerHTML=display2(stuID2);	
+} 
+ 
+
+ function display2(stuID2)
+{		
+	content3= " <table border='1' align='center'>";	
+	content3+=" <tr><th>姓名</th><th>专业</th><th>入学日期</th><th>性别</th><th>身份证号码</th><th>学分</th><th>其他说明</th><th>操作</th>";
+	content3+=" <tr><td><input type='text'   name='stuName'     id='stuName'   />  </td>";
+	content3+=" <td>    <input type='text'   name='profession'  id='profession'/>  </td>";
+	content3+=" <td>    <input type='text'   name='data'        id='data'      />  </td>";
+	content3+=" <td>    <input type='text'   name='sex'         id='sex'       />  </td>";
+	content3+=" <td>    <input type='text'   name='ID'          id='ID'        />  </td>";
+	content3+=" <td>    <input type='text'   name='totalScore'  id='totalScore'/>  </td>";
+	content3+=" <td>    <input type='text'   name='note'        id='note'      />  </td>";
+	content3+=" <td>    <button  onclick='add6()'>收起</button></td>";
+	content3+=" <td>    <button  onclick='change2(\""+stuID2+"\")'>确认</button></td></tr></table>";  
+	return content3;
+} 
+function change2(stuID3)
+{   
+     stuName   =document.getElementById("stuName").value;
+     profession=document.getElementById("profession").value;
+     data      =document.getElementById("data").value;
+     sex       =document.getElementById("sex").value;
+     ID        =document.getElementById("ID").value;
+     totalScore=document.getElementById("totalScore").value;
+     note      =document.getElementById("note").value;
+	 if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	 else 
+	   {// code for IE6, IE5 
+	      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 	   
+	   xmlhttp.open("post","changeInfo.do", true);
+	
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      alert("修改成功");				     
+			   }		   
+	   }
+	   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	   xmlhttp.send("stuID="+stuID3+"&stuName="+stuName+"&profession="+profession+"&data="+data+"&sex="+sex+"&ID="+ID+"&totalScore="+totalScore +"&note="+note);
+}
+
+function  display4(json4)
+{
+	content4="<table border='1' align='center'><tr><td>课程号</td>";	 
+	for(i=0;i<json4.length;i++)
+		{		  		  
+		  content4+="<td>"+json4[i]+"</td>"; 
+		}
+	  content4+="<td><select id='kkk'>"; 	
+	for(j=0;j<json4.length;j++)
+		{
+		  content4+="<option value="+json4[j]+">"+json4[j]+"</option>";   		 
+		}
+	  content4+="</select></td>";
+	  content4+="<td><button onclick='test0()'>删除</button></td>";
+	  content4+="<td><button onclick='test()'>收起</button></td>"	;  
+	  content4+="</tr></table>";
+	return content4;
+}
+function test0()
+ {
+	 var obj   = document.getElementById("kkk");
+     var index = obj.selectedIndex;       // 选中索引
+     var text  = obj.options[index].text; // 选中文本
+     var value = obj.options[index].value;     
+     if (window.XMLHttpRequest) 
+	   {
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else 
+	   {
+	       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	  
+	  xmlhttp.open("post", "changeTeaSou.do", true);
+	  xmlhttp.onreadystatechange=function()
+	  {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		  {
+			if(xmlhttp.responseText=="yes")
+			     {alert("删除成功");}	
+			else {alert("删除失败");}
+		  }
+
+	  };
+	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	  xmlhttp.send("scorename="+value);
+ }
+</script>
+</head>
+<body>
+  <div align="center">
+  <h1>你的信息</h1>
+  <button onclick="test()">开始查询</button>
+  <button onclick='add2()'>退出登录</button>
+  <div id="stus"></div>
+  </div>
+</body>
+</html>

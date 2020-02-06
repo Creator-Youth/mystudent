@@ -1,0 +1,121 @@
+package com.hugeyurt.http;
+import java.io.File;  
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.text.ParseException;
+import org.apache.http.Consts;
+import org.apache.http.HttpEntity;  
+import org.apache.http.HttpResponse;  
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.CharsetUtils;
+import org.apache.http.util.EntityUtils;  
+
+public class HttpDownLoadFile {
+	 public static final int cache = 10 * 1024;  
+	
+	    public static void download(String url, String filepath)
+	    {  
+	        try 
+	        {  
+	        	CloseableHttpClient httpclient = HttpClients.createDefault(); 
+	            HttpGet httpget = new HttpGet(url);  
+	            HttpResponse response = httpclient.execute(httpget);  
+	  
+	            HttpEntity entity = response.getEntity();  
+	            InputStream is = entity.getContent();
+	            
+	            if (filepath == null) return ; 
+	                
+	            File file = new File(filepath);  
+	            FileOutputStream fileout = new FileOutputStream(file);  
+	            /** 
+	             * 根据实际运行效果 设置缓冲区大小 
+	             */  
+	            byte[] buffer=new byte[cache];  
+	            int ch = 0;  
+	            while ((ch = is.read(buffer)) != -1) {  
+	                fileout.write(buffer,0,ch);  
+	            }  
+	            is.close();  
+	            fileout.flush();  
+	            fileout.close();  
+	  
+	        } catch (Exception e) {  
+	            e.printStackTrace();  
+	        }  
+	        return ;  
+	    }  
+	  
+	    public void postFile(String filePath,String upURL) throws ParseException, IOException
+	    {
+	        CloseableHttpClient httpClient = HttpClients.createDefault();
+	        try{
+	            // 要上传的文件的路径
+	          
+	            // 把一个普通参数和文件上传给下面这个地址 是一个servlet
+	            HttpPost httpPost =new HttpPost(upURL);
+	                  
+	            // 把文件转换成流对象FileBody
+	            File file =new File(filePath);
+	            String fileName=file.getName();
+	            FileBody bin =new FileBody(file); 
+	            @SuppressWarnings("unused")
+				StringBody uploadFileName =new StringBody(
+	                    fileName, ContentType.create(
+	                            "text/plain", Consts.UTF_8));
+	            //以浏览器兼容模式运行，防止文件名乱码。 
+	            HttpEntity reqEntity = MultipartEntityBuilder.create().setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
+	                    .addPart("file", bin)//uploadFile对应服务端类的同名属性<File类型>
+	                     //uploadFileName对应服务端类的同名属性<String类型>
+	                    .setCharset(CharsetUtils.get("UTF-8")).build();
+	     
+	            httpPost.setEntity(reqEntity);
+	     
+	            System.out.println("发起请求的页面地址 "+ httpPost.getRequestLine());
+	            // 发起请求 并返回请求的响应
+	            CloseableHttpResponse response = httpClient.execute(httpPost);
+	            try{
+	                System.out.println("----------------------------------------");
+	                // 打印响应状态
+	                System.out.println(response.getStatusLine());
+	                // 获取响应对象
+	                HttpEntity resEntity = response.getEntity();
+	                if(resEntity !=null) {
+	                    // 打印响应长度
+	                    System.out.println("Response content length: "
+	                            + resEntity.getContentLength());
+	                    // 打印响应内容
+	                    System.out.println(EntityUtils.toString(resEntity,
+	                            Charset.forName("UTF-8")));
+	                }
+	                // 销毁
+	                EntityUtils.consume(resEntity);
+	            }finally{
+	                response.close();
+	            }
+	        }finally{
+	            httpClient.close();
+	        }
+	    }
+
+	    public static void main(String[] args) 
+	    {  
+	      for(int i=0;i<10;i++)	
+	       {
+            String url="http://192.168.1.51:8080/Student/teaQueryStu.do";  
+	        String filepath = "D:\\hzhqian.html";  
+	        HttpDownLoadFile.download(url, filepath);  
+	       }
+	    }  
+}

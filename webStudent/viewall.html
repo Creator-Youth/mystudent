@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function test()
+{
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	 else {// code for IE6, IE5 
+	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	 } 
+	   
+	   xmlhttp.open("get", "view", true);
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value=xmlhttp.responseText;
+			      json=eval("("+value+")");
+			      document.getElementById("stus").innerHTML=display(json);
+			      
+			   }
+		   
+	   }
+	   xmlhttp.send();
+// alert(sno);
+}
+
+function display(json)
+{
+  content="<table border='1' align='center'><tr><th>学号</th><th>姓名</th><th>操作</th></tr>";
+  for(i=0;i<json.length;i++)
+	{
+	 content+="<tr><td>"+json[i].sno+"</td>";
+	 content+="<td>"+json[i].sname+"</td>";
+	 content+="<td><button onclick='deleteStu(\""+json[i].sno+"\")'>删除</button>|";
+	 content+="<a href='update.html?"+json[i].sno+"'>修改</a></td></tr>";
+	  
+	}
+  content+="</table>";
+  return content;
+}
+
+function deleteStu(sno)
+{
+	if(!confirm("确定要删除学号为："+sno+" 的学生信息吗?")) return ;
+	 if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	 else {// code for IE6, IE5 
+	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	 } 
+	   
+	   xmlhttp.open("get", "deletestu?sno="+sno, true);
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      if(xmlhttp.responseText=="yes")
+			    	  {
+			    	     alert("删除成功！");
+			    	     test();
+			    	  }
+			      else
+			    	  alert("删除失败！");
+
+			   }
+		   
+	   }
+	   xmlhttp.send();
+}
+
+
+
+</script>
+</head>
+<body onload="test()">
+  <div align="center">
+    <h1>所有学生列表</h1>
+     <div id="stus"></div>
+    </div>
+
+</body>
+</html>

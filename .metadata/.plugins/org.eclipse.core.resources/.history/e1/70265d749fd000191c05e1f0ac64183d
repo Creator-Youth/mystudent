@@ -1,0 +1,179 @@
+package wxs0605;
+
+import java.util.Scanner;
+import java.util.Stack;
+
+
+public class BTree 
+{
+     int data;
+     BTree lchild;
+     BTree rchild;
+     
+    public BTree()
+ 	{
+ 	}
+ 	
+ 	
+ 	public BTree(int data)
+ 	{
+ 		this.data=data;
+ 		this.lchild=this.rchild=null;
+ 	}
+ 	
+ 	public static BTree createBTree(Scanner reader)
+ 	{
+ 		BTree root=null;
+ 		String str=reader.nextLine();
+ 		char []array1=str.toCharArray();
+ 		int  []array2=new  int[array1.length];
+ 		int i=0,k=0,j=0;
+ 		
+ 		while(j<array1.length)///             1(2(3,4(,5)),6(7,))
+ 		{
+ 			if(array1[j]=='(')
+ 			{			   		     
+ 				if
+ 				((array1[++j]=='1'
+ 				||array1[++j]=='2'
+ 				||array1[++j]=='3'
+ 				||array1[++j]=='4'
+ 				||array1[++j]=='5'
+ 				||array1[++j]=='6'
+ 				||array1[++j]=='7'
+ 				||array1[++j]=='8'
+ 				||array1[++j]=='9')&&array1[++j]==',')
+ 				{
+ 					array2[i++]=(int)array1[j];
+ 					array2[i++]=0;
+					array2[i++]=0;
+ 				}
+ 				if(      array1[++j]==',' &&(array1[++j]=='1'
+ 		 				||array1[++j]=='2'
+ 		 				||array1[++j]=='3'
+ 		 				||array1[++j]=='4'
+ 		 				||array1[++j]=='5'
+ 		 				||array1[++j]=='6'
+ 		 				||array1[++j]=='7'
+ 		 				||array1[++j]=='8'
+ 		 				||array1[++j]=='9'
+ 		 				))
+ 					{
+ 					    array2[i++]=0;
+ 					    array2[i++]=0;
+ 					}
+ 				if
+ 				(array1[++j]=='1'
+ 				||array1[++j]=='2'
+ 				||array1[++j]=='3'
+ 				||array1[++j]=='4'
+ 				||array1[++j]=='5'
+ 				||array1[++j]=='6'
+ 				||array1[++j]=='7'
+ 				||array1[++j]=='8'
+ 				||array1[++j]=='9')
+ 				{
+ 					array2[i++]=(int)array1[j];
+ 			}
+ 				else j++;
+ 		}
+ 		int m=reader.nextInt();
+ 		if(m<=0) return null;
+ 		root=new BTree(m);
+ 		root.lchild=createBTree(reader);
+ 		root.rchild=createBTree(reader);
+ 		return root;
+ 	}
+ 	
+ 	public void pre(BTree root)//前序遍历
+ 	{
+ 		if(root==null)
+ 		{
+ 			return ;
+ 		}
+ 		Stack<BTree> stack=new Stack<BTree>();
+ 		while(root!=null)
+ 		{
+ 			System.out.println(root.data);
+ 			stack.push(root);
+ 			root=root.lchild;
+ 		}
+ 		
+ 		while (!stack.isEmpty())
+ 		{
+ 			root=stack.pop();
+ 			if(root.rchild!=null)
+ 			{
+ 				    root=root.rchild;				
+ 				   while(root!=null)
+ 			 		{
+ 			 			System.out.println(root.data);
+ 			 			stack.push(root);
+ 			 			root=root.lchild;
+ 			 		}	 		 				
+ 			}
+ 		}
+ 	}
+ 	
+ 	public  void mid(BTree root)//中序遍历
+ 	{
+ 		if(root==null)
+ 		{
+ 			return ;
+ 		}
+ 		Stack<BTree> stack=new Stack<BTree>();
+ 		while(root!=null)
+ 		{ 			
+ 			stack.push(root);
+ 			root=root.lchild;
+ 		}
+ 		
+ 		while (!stack.isEmpty())
+ 		{
+ 			root=stack.pop();
+ 			System.out.println(root.data);
+ 			if(root.rchild!=null)
+ 			{
+ 				    root=root.rchild;				
+ 				    while(root!=null)
+ 			 		{			 			
+ 			 			stack.push(root);
+ 			 			root=root.lchild;
+ 			 		}	 		 				
+ 			}
+ 		}
+ 	}
+ 	
+ 	public void pos(BTree root)//后序遍历
+ 	{
+ 		if(root==null)
+ 		{
+ 			return ;
+ 		}
+ 		Stack<BTree> stack=new Stack<BTree>();
+ 		stack.push(root);
+ 				
+ 		while (!stack.isEmpty())
+ 		{
+ 			root=stack.pop();			
+ 			if(root.rchild==null&&root.lchild==null)
+ 			{
+ 				System.out.println(root.data);	
+ 				continue;
+ 			}
+ 			BTree newOne=new BTree(root.data);
+ 			
+ 			if(root.rchild!=null){stack.push(root.rchild);}
+ 			stack.push(newOne);
+ 			if(root.lchild!=null){stack.push(root.lchild);}
+ 			
+ 		}
+ 	}
+ 	public static void main(String[] args)
+ 	{
+ 		Scanner reader= new Scanner(System.in);
+		BTree bt= new BTree();
+		bt.pos(BTree.createBTree(reader));
+ 	}
+	
+}

@@ -1,0 +1,25 @@
+package app;
+
+import java.util.Scanner;
+
+public class mytest5
+{
+	public static void Swap(int data)
+	{
+		for(int i=31;i>=0;i--)
+		{
+			System.out.print(data>>>1&1);
+		}
+		
+	}
+
+	public static void main(String[] args) 
+	{		
+		System.out.print("my");
+		Scanner in=new Scanner(System.in);
+		int data=in.nextInt();
+		Swap(data);
+
+	}
+
+}

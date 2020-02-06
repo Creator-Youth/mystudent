@@ -1,0 +1,49 @@
+<html>
+ <head>
+    <title>登录</title>
+    <meta charset="UTF-8">
+  <script type="text/javascript">
+    function login()
+    {
+    	userID=document.getElementById("userID").value;
+    	pwd=document.getElementById("pwd").value;
+  	   if (window.XMLHttpRequest) 
+  	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+  	      xmlhttp=new XMLHttpRequest(); 
+  	   } 
+  	 else {// code for IE6, IE5 
+  	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+  	 } 
+  	   
+  	   xmlhttp.open("post", "login", true);
+  	   xmlhttp.onreadystatechange=function()
+  	   {
+  		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+  			   {
+  			      if(xmlhttp.responseText=="yes")
+  			    	  window.location.href="success.html";
+  			      else
+  			    	  alert("用户名或密码出错！") 
+  			   }
+  		   
+  	   }
+  	 xmlhttp.setRequestHeader("Content-type",
+  	"application/x-www-form-urlencoded");
+  	   xmlhttp.send("userID="+userID+"&pwd="+pwd);
+    }
+  </script>  
+    
+  </head>
+  <body bgcolor=00ff88>
+     
+	   <h1>休息休息系统</h1>>
+	   <hr>
+	     <div align="center">
+		  用户名:<input type="text" name="userID" id="userID"/><br>
+		  密码：<input type="password" name="pwd"  id="pwd"/><br>
+		  <button onclick="login()">登录</button>
+		 </div>
+		
+		
+  </body>
+ </html>

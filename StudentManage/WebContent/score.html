@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>成绩修改和查看</title>
+<script type="text/javascript">
+function test()
+{
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else 
+	  {// code for IE6, IE5 
+	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	  } 
+	   
+	   xmlhttp.open("get", "findscore.do", true);
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			      value1=xmlhttp.responseText;
+			      json=eval("("+value1+")");
+			      document.getElementById("stus").innerHTML=display(json);			      
+			   }		   
+	   }
+	 xmlhttp.send();
+}
+
+function display(json)
+ {
+	
+     content ="<table border='1' align='center'><tr><th>课程号</th><th>学号</th><th>操作</th></tr>";
+     
+     for(i=0;i<json.length;i++)
+ 	 {
+    	
+ 	 content+="<tr><td>"+json[i].coursename+"</td>";//课程号	  	  	 
+ 	 content+="<td>"; 
+ 	 content+="<select id='kk'>"; 	
+ 	 json2=json[i].list;
+ 	 for(j=0;j<json2.length;j++)
+ 	 {
+ 	   content+="<option value="+json2[j]+">"+json2[j]+"</option>";         //学号 	  	 
+ 	 }	 		 		 		     
+ 	 content+= "</select ></td>"; 
+ 	  
+ 	
+ 	 content+="<td><button onclick='see(\""+json[i].coursename+"\")'>查看</button></td>";
+     content+="<td><button onclick='change(\""+json[i].coursename+"\")'>修改成绩 </button></td></tr>";	  
+ 	}
+    content+="</table>";
+    content+="<div id='stuss'></div>";
+    content+="<div id='stusss'></div>"
+    return content;
+} 
+
+function see(coursename)
+{
+	 var obj   = document.getElementById("kk");
+     var index = obj.selectedIndex;       // 选中索引
+     var text  = obj.options[index].text; // 选中文本
+     var value1 = obj.options[index].value;           
+ 	 if (window.XMLHttpRequest) 
+	   {
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else 
+	   {// code for IE6, IE5 
+	       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 
+	  
+ 	  xmlhttp.open("post", "see.do", true);
+ 	  xmlhttp.onreadystatechange=function()
+ 	  {
+ 		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		  {
+ 			  value1=xmlhttp.responseText;
+		      json1=eval("("+value1+")");
+		      document.getElementById("stuss").innerHTML=display1(json1);
+		  }
+
+ 	  };
+ 	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  	  xmlhttp.send("studentid="+value1+"&coursename="+coursename);
+}
+function change(coursename)
+{	
+		 document.getElementById("stusss").innerHTML=display2(coursename);
+}
+function display1(json)
+{
+	 content ="<table border='1' align='center'><tr><th>编号</th><th>学号</th><th>课程号</th><th>平时成绩</th><th>考核成绩</th><th>总成绩</th><th>日期</th><th>备注</th></tr>";
+	 content+="<tr><td>"+json.markid+"</td><td>"+json.stuid+"</td><td>"+json.couresename+"</td><td>"+json.basescore+"</td><td>"+json.testscore+"</td><td>"+json.finalscore+"</td><td>"+json.adddate+"</td><td>"+json.note+"</td></tr>";
+     content+="</table>";
+     content+="<button onclick='test()'>收起</button>";
+     
+     return content;
+}
+
+function display2(coursename)
+{	
+	content="<h1>确认无误后添加</h1>";
+    content+="平时成绩<input type='text'  name='basescore'   id='basescore'/><br>";
+    content+="考核成绩<input type='text'  name='testscore'   id='testscore'/><br>";
+    content+="备注       <input  type='text'  name='note'        id='note'     /><br>";
+    content+="<button onclick='change1(\""+coursename+"\")'>确认修改</button><br>";
+    content+="<button onclick='test()'>放弃修改</button><br>";	
+    content+="<button onclick='test()'>收起</button><br>";	
+    return content;
+}
+function change1(coursename)
+{
+	var obj   = document.getElementById("kk");
+    var index = obj.selectedIndex;       // 选中索引
+    var text  = obj.options[index].text; // 选中文本
+    var value2= obj.options[index].value; 
+    alert(value2);
+	basescore =document.getElementById("basescore").value;
+	testscore =document.getElementById("testscore").value;
+	note      =document.getElementById("note").value;
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else
+	  {// code for IE6, IE5 
+	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	  } 
+	   alert("总成绩自动生成");
+	   xmlhttp.open("post","changescore.do", true);	 
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			     if(xmlhttp.responseText=="yes")
+			    	 {
+			    	     alert("添加成功");			    	
+			    	 }
+			    
+			     else
+			       {
+			    	     alert("添加失败,重新添加");
+			       }	
+			   }
+	   }
+	   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	   xmlhttp.send("basescore="+basescore+"&testscore="+testscore+"&coursename="+coursename+"&studentid="+value2+"&note="+note);
+	 
+}
+function test2()
+{
+	window.location.href="teacherview.html";
+}
+
+</script>
+</head>
+<body  >
+   <div align="center"> 
+    <h1>成绩修改和查看</h1>
+    <button onclick="test()">成绩修改和查看</button>
+    <button onclick="test2()">退出</button>
+  <div id="stus"></div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function test()
+{
+	    passname1  =document.getElementById("passname1").value;
+	    passname2  =document.getElementById("passname2").value;
+	    if(passname1!=passname2)
+	    	{	    	
+	    	 alert("两次密码不一致，重新输入")
+	    	 window.location.href="changepassname.html";	    	
+	    	}
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else
+	  {// code for IE6, IE5 
+	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	  } 	  
+	   xmlhttp.open("post","changepassname.do", true);
+	 
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			     if(xmlhttp.responseText=="yes")
+			    	 {
+			    	 alert("修改成功");
+			    	 window.location.href="enter.html";
+			    	 }
+			     else
+			        {
+			    	 alert("修改不成功");
+			    	 window.location.href="changepassname.html"; 			      
+			         }
+			   }
+	   }
+	   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	   xmlhttp.send("passname1="+passname1);
+	 
+}
+function test1()
+{
+	 window.location.href="enter.html";
+}
+</script>
+</head>
+<body>
+             输入密码<input type="text"      name="passname1"       id="passname1"/><br>
+             确认密码<input type="text"      name="passname2"       id="passname2"/><br>
+             <button   onclick="test()" >确认修改</button>
+             <button   onclick="test1()">放弃修改</button>
+</body>
+</html>

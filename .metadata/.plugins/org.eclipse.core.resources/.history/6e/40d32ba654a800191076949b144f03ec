@@ -1,0 +1,139 @@
+package com.hugeyurt.service;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import com.hugeyurt.database.DBConnection;
+
+public class enterService 
+{
+
+//	     static public boolean creat(String account, String passname)
+//	     {   
+//	    	 boolean cr=true;
+//	    	 DBConnection db=new DBConnection();
+//	    	 String sql1="select passname from studentmanage.enter where sno=account";
+//	    	 String sql2="insert into studentmanage.enter (sno,passname,count,time) values (acccount,passname,0,0)";
+//	    	 if(db.executeQuery(sql1).isEmpty()) 
+//	    	 {
+//	    		 db.executeUpdate(sql2);
+//	    	 }
+//	    	 else  cr=false;                 
+//	    	 return cr;
+	   //  }
+	     
+	   
+		 static public int input(String account, String passname) throws SQLException
+	     {   			 
+			 int i=0;
+			 int count=0;
+			 int  Time=0;
+			 String passname1=null;
+	    	 DBConnection db=new DBConnection();
+	    	 String sql1="select passname from studentmanage.enter where sno=?"; 
+	    	 Object parsms1[]={account};
+	    	 ResultSet sett=db.executeQuery(sql1, parsms1);    	
+	     	 if(sett==null) 
+	     	 {
+	         	i=4;//"请先创建账户或账户不存在，请重新输入"
+	     	 }
+	     	 
+	     	 else  
+	       	  {
+	     	
+	     	    String sql2="select passname,count,time from studentmanage.enter where sno=?";  	     	    
+	     	    ResultSet set=db.executeQuery(sql2, parsms1);
+	     	    while(set.next())
+	     	    {
+	     	        count=(int)set.getObject("count");
+	     	        passname1=(String)set.getObject("passname");
+	     	      
+	     	        Time=(int)set.getObject("time");
+	     	       System.out.println(count+passname1+Time);
+	     	    }
+	     	        if(count<3)
+	       			 {
+	     	    	      
+	       				 if(passname1.equals(passname))
+	           			 {
+	           				 
+	       					 String sql3="delete  from studentmanage.enter where sno=?"; 
+	       					 Object[] parsms2={account};	       					 
+	       					 int a = db.executeUpdate(sql3,parsms2);
+	       					 String sql4="insert into studentmanage.enter(sno,passname,count,time) values (?,?,?,?)";
+	       					 int time=(int)System.currentTimeMillis();
+	       					 Object parsms[]={account,passname1,0,time};
+	       					 db.executeUpdate(sql4, parsms);         				 	           				
+	           				 i=1; //"----密码正确"
+	           			 }
+	           			 else
+	           			 {
+	           				count++;
+	           				String sql3="delete  from studentmanage.enter where sno=？";  
+	       					db.executeUpdate(sql3,parsms1);
+	           				String sql4="insert into studentmanage.enter (sno,passname,count,time)values(?,?,?,?)";
+	       					int time=(int)System.currentTimeMillis();
+	       					Object parsms[]={account,passname1,count,time};
+	       					db.executeUpdate(sql4, parsms); 
+	           				System.out.println("----密码错误，第"+count+"次");
+	           				i=5+count;
+	           			 } 
+	       			 }
+	       			 else
+	       			 {
+	       				 if(System.currentTimeMillis()-Time<1000*10*60*24)
+	       				 {
+	       					 long   time1=System.currentTimeMillis();
+	       					 double ti1=(double)((1000*60*60*24)-(time1-Time))/1000;//秒
+	       					 int    hour=(int)(ti1/(60*60));
+	       					 int    minute=(int)(ti1-(60*60*hour))/(60);
+	       					 int    s=(int)(ti1-(60*60*hour+minute*60));
+	       					 if(passname1.equals(passname))
+	       					 {
+	       						 System.out.println("密码正确，请等待"+hour+"小时"+minute+"分"+s+"S"+"再次输入");
+	       					 }
+	       					 else
+	       					 {
+	       						 System.out.println("密码错误，请等待"+hour+"小时"+minute+"分"+s+"S"+"再次输入");
+	                         }      					 
+	       				 }
+	       				 else
+	       				 {
+	       					 String sql3="delete  from studentmanage.enter where sno=?";
+	       					 db.executeUpdate(sql3, parsms1);
+	       					 String sql4="insert into studentmanage.enter (sno,passname,count,time) values (?,?,?,?)";
+	       					 int time=(int)System.currentTimeMillis();
+	   
+	       					 if(passname1.equals(passname))
+	              			 { 
+	       						  Object parsms[]={account,passname1,0,time};
+		       					  db.executeUpdate(sql4, parsms); 
+	              				  i=1;//System.out.println("密码正确");
+	              			 }
+	       				     else
+	           			     {	  
+	       		     	        ResultSet set1=db.executeQuery2(sql2);
+	       		     	        int count1= (int)set1.getObject(2);
+	       		     	        count1++;
+	       		     	        String sql5="delete  from studentmanage.enter where sno=?";
+       					        db.executeUpdate(sql5, parsms1);
+		           				String sql6="insert into studentmanage.enter (sno,passname,count,time) values (?,?,?,?)";
+		       					int time1=(int)System.currentTimeMillis();
+		       					Object parsms[]={account,passname1,count1,time1};
+		       					db.executeUpdate(sql6, parsms); 
+		           				System.out.println("----密码错误，第"+count+"次");
+		           				i=5+count;
+	           			     } 
+	       				 }
+	       			 }
+	       			 
+	       			
+	       	      }
+	       	 
+
+		     	
+	     	 System.out.println("输出"+i);
+	         return i;
+	   }
+	}
+	
+	
+

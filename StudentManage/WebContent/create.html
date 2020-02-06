@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>注册</title>
+<script type="text/javascript">
+function test()
+{
+	    passname1  =document.getElementById("passname1").value;	    
+	    passname2  =document.getElementById("passname2").value;	    
+	    stuID     =document.getElementById("stuID").value;
+	    stuName   =document.getElementById("stuName").value;
+	    profession=document.getElementById("profession").value;
+	    sex       =document.getElementById("sex").value;
+	    ID        =document.getElementById("ID").value;
+	    if(passname1!=passname2)
+	    	{	    	
+	    	 alert("两次密码不一致，重新输入")
+	    	 window.location.href="create.html";	    	
+	    	}
+	   if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else
+	  {// code for IE6, IE5 
+	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	  } 
+	  
+	   xmlhttp.open("post","create.do", true);
+	 
+	   xmlhttp.onreadystatechange=function()
+	   {
+		   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			   {
+			     if(xmlhttp.responseText=="5")
+			    	 {
+			    	 alert("成功注册");
+			    	 window.location.href="enter.html";
+			    	 }
+			     else if(xmlhttp.responseText=="1")
+			        {
+			    	 alert("账号已注册，请找回密码  ");
+			    	 window.location.href="create.html"; 			      
+			         }
+			     else if(xmlhttp.responseText=="2")
+			        {
+			    	 alert("未查到你的信息无法注册");
+			    	 window.location.href="create.html"; 			      
+			         }
+			     else if(xmlhttp.responseText=="4")
+			        {
+			    	 alert("信息错误");
+			    	 window.location.href="create.html"; 			      
+			         }
+			    
+			     else
+			        {
+			    	 alert("其他错误");
+			    	 window.location.href="create.html"; 			      
+			         }
+			   }
+	   }
+	   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	   xmlhttp.send("stuID="+stuID+"&stuName="+stuName+"&profession="+profession+
+			   "&sex="+sex+"&ID="+ID+"&passname1="+passname1);
+	 
+}
+function enter()
+{
+	    	 window.location.href="enter.html";	    	 
+}
+</script>
+</head>
+<body>
+ <div align="center">
+    <h1>注册时须个人信息正确方可注册</h1>   
+             学号<input type="text"      name="stuID"       id="stuID"/><br>
+             姓名<input type="text"      name="stuName"      id="stuName"/><br>
+             专业 <input type="text"      name="profession"   id="profession"/><br>
+             性别 <input type="text"      name="sex"          id="sex" /><br>
+             身份证号码<input type="text"   name="ID"           id="ID" /><br>
+             输入密码<input type="text"      name="passname1"  id="passname1"/><br>
+             确认密码<input type="text"      name="passname2"   id="passname2"/><br>         
+	 <button onclick="test()">&nbsp;确认注册</button>
+	 <button onclick="enter()">已有账号</button>	 		
+</div>
+</body>
+</html>

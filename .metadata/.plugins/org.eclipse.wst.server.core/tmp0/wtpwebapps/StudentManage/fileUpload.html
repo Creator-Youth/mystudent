@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="textml; charset=UTF-8">
+<title>照片上传</title>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+ $(function () {
+        $("#upload").click(function () {
+            var formData = new FormData($('#uploadForm')[0]);
+            $.ajax({
+                type:'post',
+                url: "file/upload.do",
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+            }).success(function (data) {
+                alert("文件上传成功！");
+                document.getElementById("photo").innerHTML="<img src="+data+"  width=10% height=10%>";
+                document.getElementById("photourl").value=data;
+            }).error(function () {
+                alert("上传失败");
+            });
+        });
+    });
+</script>
+</head>
+<body>
+    照片：
+	     <div    id="photo"></div><br> 
+		 <input type="hidden" id="photourl"/><br> 
+         <form id="uploadForm" enctype="multipart/form-data">
+                            文件:<input id="file" type="file" name="file"/>
+         </form>
+         <button id="upload">上传文件</button>
+    
+</body>
+</html>

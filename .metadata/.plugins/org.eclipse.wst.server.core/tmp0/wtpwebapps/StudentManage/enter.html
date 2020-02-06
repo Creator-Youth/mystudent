@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>用户登录系统</title>
+<meta charset="UTF-8">
+<script type="text/javascript">
+  function test()
+  {
+	  UserID=document.getElementById("UserID");
+  	  pwd=document.getElementById("pwd");
+  	  if (window.XMLHttpRequest) 
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	      xmlhttp=new XMLHttpRequest(); 
+	   } 
+	  else 
+	   {// code for IE6, IE5 
+	       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+	   } 	  
+  	  xmlhttp.open("post", "enter.do", true);
+  	  xmlhttp.onreadystatechange=function()
+  	  {
+  		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		  {
+  			alert(xmlhttp.responseText)
+		    if (xmlhttp.responseText==1)  {window.location.href="success.html";}
+		    else if(xmlhttp.responseText==0)  {window.location.href="teacherview.html";}
+		    else if(xmlhttp.responseText==4)  {alert("请先创建账户或账户不存在，请重新输入"); }
+		    else if(xmlhttp.responseText==6||xmlhttp.responseText==7||xmlhttp.responseText==8)
+		    { 
+		    	s=xmlhttp.responseText-5+"次";
+		    	t="密码输入错误,第"+s+"请重新输入";
+		    	alert(t);
+		    }		   
+		    else  { alert("密码输入错误超过三次，请等待一定时间再次输入");}  
+		  }
+  	  };
+  	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+   	  xmlhttp.send("UserID="+UserID.value+"&pwd="+pwd.value);
+  }
+
+</script>
+</head>
+<body>
+<hr>
+   <h1>王一一</h1>
+   <div align="center">
+        账号：   <input type="text"      name="UserID" id="UserID"/><br>
+        密码：   <input type="password"  name="pwd"    id="pwd"/><br>
+        <button onclick="test()">登录</button>
+        <a href="create.html">注册</a>
+
+    </div>
+</body>
+
+</html>

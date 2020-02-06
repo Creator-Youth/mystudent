@@ -1,0 +1,149 @@
+package app;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class tset2
+{
+	public static int Sum_Solution(int n) 
+    {
+        int sum=n;
+        return sum;
+    }
+	public int NumberOf1Between1AndN_Solution(int n)
+    {
+       int count=0;
+       for (int i=1;i<=n;i++)
+       {
+           count+=count(i);
+       }
+         return count;
+     }
+    private  int count (int n)
+    {
+        int sum=0;
+        String str=Integer.toString(n);
+        char []array=str.toCharArray();
+        for ( int i=0;i<array.length;i++)
+        {
+            if(array[i]=='1')
+            {
+                sum++;
+            }           
+        }
+        return sum;
+    }
+	public static void main(String[] args)
+	{
+		
+		
+	}
+	
+	 public static ArrayList<ArrayList<Integer> > FindContinuousSequence(int sum) 
+	 {
+		 ArrayList<ArrayList<Integer> > result=new ArrayList<>();
+		 int low=1,high=2;
+		 while (high>low)
+		 {
+			 
+			 int count=(low+high)*(high-low+1)/2;
+			 if(count==sum)
+			 {
+				 ArrayList<Integer> list=new ArrayList<Integer>();
+				 for(int i=low;i<=high;i++)
+				 {
+					 list.add(i);
+				 }
+				 result.add(list);
+				 high++;
+			 }
+			 else if(count<sum)
+			 {
+				 high++;
+			 }
+			 else 
+			 {
+				 low++;
+			 }
+			 
+		 }
+	     return result;  
+	 }
+	    public static int FirstNotRepeatingChar(String str) 
+	    {	
+	    	int j=-1;       	        
+	    	HashMap<Object, Integer> map=new HashMap<Object, Integer>();
+	    	char[] array=str.toCharArray();
+	        for(int i = 0; i < array.length; ++i)
+	        {	
+	        	if(map.containsKey(array[i]))
+	        	{
+	        		map.put(array[i], map.get(array[i])+1);
+	        	}
+	        	else
+	        	{
+	        		map.put(array[i], 1);
+	        	}
+	            
+	        }
+	        for(int i = 0; i < array.length; ++i)
+	        {	
+	        	if(map.containsKey(array[i]))
+	        	{
+	        		if (map.get(array[i])==1);
+	        		j=i;
+	        	}
+	    
+	        }
+	      return j;
+	    }
+	    public static void max(int data[])
+	    {      
+	        for (int i=1;i<data.length;i++)
+	        {
+	            if(data[0]<data[i])
+	            {               
+	                int j=data[0];
+	                data[0]=data[i];
+	                data[i]=j;                
+	            }
+	           
+	               
+	        }
+	            
+	    }
+	    public ArrayList<Integer> FindNumbersWithSum(int [] array,int sum) 
+	    {
+	        ArrayList<Integer> list=new ArrayList<>();
+	        int low=0,high=array.length,i=0;
+	        while (low<high)
+	        {
+	            int count =array[low]+array[high];
+	            if(count==sum)
+	            {
+	                while(i==0)
+	                {
+	                    i=array[low];
+	                }
+	                while(array[low]*array[high]<i*(sum-i))
+	                {
+	                    i=array[low];
+	                }
+	                low++;
+	            }
+	            else if(count<sum)
+	            {
+	                low++;
+	            }
+	            else
+	            {
+	                high--;
+	            }            
+	        }
+	        list.add(i);
+	        list.add(sum-i);
+	        return list;
+	    }
+	
+}
+

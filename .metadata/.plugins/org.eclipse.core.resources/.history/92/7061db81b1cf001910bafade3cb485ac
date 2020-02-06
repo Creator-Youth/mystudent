@@ -1,0 +1,33 @@
+package app;
+
+import java.util.Scanner;
+
+public class Main1 {
+
+	@SuppressWarnings("resource")
+	public static void main(String[] args) 
+	{
+		 Scanner reader =new Scanner(System.in);
+         int N=reader.nextInt();
+         int data[]={1,2};        
+         Max(N);  
+
+	}
+	 public static void Max(int N)
+	    {     	
+	    	if(N<0) System.out.println("输入错误");    	 
+	    	int amount[]=new int[N+1];   	
+	    	for (int i=0;i<=N;i++)
+	        {        	
+	        		amount[i]=0;      	          
+	        }
+	    	amount[1]=1; 
+	    	if(N<=1)  System.out.print(amount[N]);
+	    	for (int i=2;i<=N;i++)
+	        {        		        	       		
+	        		amount[i]=Math.max(amount[i-1],amount[i-2])+1;        			        	
+	        }              
+	        System.out.print(amount[N]);//等于N+1时，可加判断条件输出。
+	    }
+
+}
